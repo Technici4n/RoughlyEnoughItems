@@ -25,6 +25,7 @@ package me.shedaniel.rei.jeicompat.wrap;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import dev.architectury.utils.Amount;
 import lombok.experimental.ExtensionMethod;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
@@ -34,6 +35,7 @@ import me.shedaniel.rei.api.client.gui.widgets.Widgets;
 import me.shedaniel.rei.api.common.entry.EntryStack;
 import me.shedaniel.rei.api.common.entry.type.EntryType;
 import me.shedaniel.rei.jeicompat.JEIPluginDetector;
+import mezz.jei.api.forge.ForgeTypes;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotTooltipCallback;
@@ -43,6 +45,9 @@ import mezz.jei.api.ingredients.IIngredientType;
 import mezz.jei.api.ingredients.ITypedIngredient;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import org.jetbrains.annotations.Nullable;
 
@@ -98,6 +103,16 @@ public class JEIRecipeSlot implements IRecipeSlotBuilder, IRecipeSlotView {
     public <I> IRecipeSlotBuilder addIngredient(IIngredientType<I> ingredientType, I ingredient) {
         this.slot.entry(ingredient.unwrapStack(ingredientType));
         return this;
+    }
+    
+    @Override
+    public IRecipeSlotBuilder addFluidStack(Fluid fluid, long amount) {
+        return addIngredient(ForgeTypes.FLUID_STACK, new FluidStack(fluid, Amount.toInt(amount)));
+    }
+    
+    @Override
+    public IRecipeSlotBuilder addFluidStack(Fluid fluid, long amount, CompoundTag tag) {
+        return addIngredient(ForgeTypes.FLUID_STACK, new FluidStack(fluid, Amount.toInt(amount), tag));
     }
     
     @Override

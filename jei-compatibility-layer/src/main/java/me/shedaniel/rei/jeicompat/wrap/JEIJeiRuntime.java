@@ -83,4 +83,9 @@ public enum JEIJeiRuntime implements IJeiRuntime {
     public IIngredientVisibility getIngredientVisibility() {
         return JEIIngredientVisibility.INSTANCE;
     }
+    
+    @Override
+    public IJeiKeyMappings getKeyMappings() {
+        return JEIJeiKeyMappings.INSTANCE;
+    }
 }

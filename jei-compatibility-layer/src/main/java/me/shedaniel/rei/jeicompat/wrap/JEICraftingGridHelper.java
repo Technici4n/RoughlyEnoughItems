@@ -43,7 +43,7 @@ public enum JEICraftingGridHelper implements ICraftingGridHelper {
     INSTANCE;
     
     @Override
-    public <T> void setInputs(IRecipeLayoutBuilder builder, IIngredientType<T> ingredientType, List<@Nullable List<@Nullable T>> inputs, int width, int height) {
+    public <T> List<IRecipeSlotBuilder> createAndSetInputs(IRecipeLayoutBuilder builder, IIngredientType<T> ingredientType, List<@Nullable List<@Nullable T>> inputs, int width, int height) {
         List<IRecipeSlotBuilder> slotBuilders = new ArrayList<>();
         for (int y = 0; y < 3; ++y) {
             for (int x = 0; x < 3; ++x) {
@@ -52,6 +52,12 @@ public enum JEICraftingGridHelper implements ICraftingGridHelper {
         }
         
         setInputs(slotBuilders, ingredientType, inputs, width, height);
+        return slotBuilders;
+    }
+    
+    @Override
+    public <T> void setInputs(IRecipeLayoutBuilder builder, IIngredientType<T> ingredientType, List<@Nullable List<@Nullable T>> inputs, int width, int height) {
+        createAndSetInputs(builder, ingredientType, inputs, width, height);
     }
     
     @Override
@@ -75,9 +81,14 @@ public enum JEICraftingGridHelper implements ICraftingGridHelper {
     }
     
     @Override
-    public <T> void setOutputs(IRecipeLayoutBuilder builder, IIngredientType<T> ingredientType, @Nullable List<@Nullable T> outputs) {
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 13 + 95, 2 + 19)
+    public <T> IRecipeSlotBuilder createAndSetOutputs(IRecipeLayoutBuilder builder, IIngredientType<T> ingredientType, @Nullable List<@Nullable T> outputs) {
+        return builder.addSlot(RecipeIngredientRole.OUTPUT, 13 + 95, 2 + 19)
                 .addIngredients(ingredientType, outputs);
+    }
+    
+    @Override
+    public <T> void setOutputs(IRecipeLayoutBuilder builder, IIngredientType<T> ingredientType, @Nullable List<@Nullable T> outputs) {
+        createAndSetOutputs(builder, ingredientType, outputs);
     }
     
     private static int getShapelessSize(int total) {

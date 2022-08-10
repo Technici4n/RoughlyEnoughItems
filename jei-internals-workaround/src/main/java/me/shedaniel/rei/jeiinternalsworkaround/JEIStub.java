@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-package me.shedaniel.rei.forge;
+package me.shedaniel.rei.jeiinternalsworkaround;
 
 import net.minecraftforge.fml.common.Mod;
 
